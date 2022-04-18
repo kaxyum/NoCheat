@@ -6,6 +6,9 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\permission\Permission;
+use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use pocketmine\utils\Config;
@@ -20,6 +23,7 @@ class Main extends PluginBase implements Listener
     private $clicks;
 
     public function onEnable(): void{
+        PermissionManager::getInstance()->addPermission(new Permission("fly.bypass","fly permission"));
         @mkdir($this->getDataFolder());
         $this->cfg = $this->getConfig();
         $this->saveDefaultConfig();
@@ -47,8 +51,7 @@ class Main extends PluginBase implements Listener
         if($player instanceof Player){
             $this->addCPS($player);
         }
-        if($this->getCPS($player) == 14
-        ){
+        if($this->getCPS($player) == $this->cfg->get("cpslimit")){
             $player->kick($this->cfg->get("clickkick"));
         }
       }
@@ -56,7 +59,7 @@ class Main extends PluginBase implements Listener
 
     public function onFly(PlayerToggleFlightEvent $event){
         if($this->cfg->get("antifly") == "true"){
-        if($event->getPlayer()->hasPermission("fly.bypass")){
+        if($event->getPlayer()->hasPermission("fly.bypass") && $event->getPlayer()->isOp($event->getPlayer()->getName())){
         }else{
             $event->getPlayer()->kick($this->cfg->get("flykick"));
         }
@@ -79,7 +82,7 @@ class Main extends PluginBase implements Listener
             $config->set('minerais', $config->get('minerais') + 1);
             $config->save();
         }
-        if($config->get("minerais") === 15){
+        if($config->get("minerais") === $this->cfg->get("orelimit")){
             $player->kick($this->cfg->get("xraykick"));
         }
       }
@@ -110,5 +113,13 @@ class Main extends PluginBase implements Listener
         }
         $clicks++;
         $this->clicks[$player->getName()] = [$time, $clicks];
+    }
+
+    public function onDamage(EntityDamageByEntityEvent $event){
+        if($this->cfg->get("antikb") == "true"){
+        if($event->getKnockBack() == 0){
+            $event->getPlayer()->kick($this->cfg->get("kbkick"));
+        }
+    }
     }
 }
