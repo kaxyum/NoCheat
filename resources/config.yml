@@ -1,0 +1,9 @@
+---
+anticlick: "true"
+clickkick: "§fVous avez été §6détecté§f par l'anticheat pour §6AUTOCLICK\n§fSi cela est une erreur reconnectez vous."
+antixray: "true"
+xraykick: "§fVous avez été §6détecté§f par l'anticheat pour §6X-RAY\n§fSi cela est une erreur reconnectez vous."
+antifly: "true"
+flykick: "§fVous avez été §6détecté§f par l'anticheat pour §6FLY\n§fSi cela est une erreur reconnectez vous."
+#permission is fly.bypass
+...
