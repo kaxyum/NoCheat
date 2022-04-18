@@ -59,7 +59,7 @@ class Main extends PluginBase implements Listener
 
     public function onFly(PlayerToggleFlightEvent $event){
         if($this->cfg->get("antifly") == "true"){
-        if($event->getPlayer()->hasPermission("fly.bypass") && $event->getPlayer()->isOp($event->getPlayer()->getName())){
+        if($event->getPlayer()->hasPermission("fly.bypass") && Server::getInstance->isOp($event->getPlayer()->getName())){
         }else{
             $event->getPlayer()->kick($this->cfg->get("flykick"));
         }
