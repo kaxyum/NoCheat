@@ -14,6 +14,9 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
 class Main extends PluginBase implements Listener
 {
@@ -45,16 +48,18 @@ class Main extends PluginBase implements Listener
 
     }
 
-    public function onInteract(PlayerInteractEvent $event){
-        $player = $event->getPlayer();
-        if($this->cfg->get("anticlick") == "true"){
-        if($player instanceof Player){
-            $this->addCPS($player);
+    public function onDataPacketReceive(DataPacketReceiveEvent $event){
+        $packet = $event->getPacket();
+
+        if($packet instanceof LevelSoundEventPacket){
+            if($this->cfg->get("anticlick") == "true"){
+                if($this->getCPS($event->getOrigin()->getPlayer()) == $this->cfg->get("cpslimit")){
+                    $event->getOrigin()->getPlayer()->kick($this->cfg->get("clickkick"));
+                }
+                $this->addCPS($event->getOrigin()->getPlayer());
+                $event->getOrigin()->getPlayer()->sendPopup("{" . $this->getCPS($event->getOrigin()->getPlayer()) . "}");
+          }
         }
-        if($this->getCPS($player) == $this->cfg->get("cpslimit")){
-            $player->kick($this->cfg->get("clickkick"));
-        }
-      }
     }
 
     public function onFly(PlayerToggleFlightEvent $event){
