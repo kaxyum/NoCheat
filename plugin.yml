@@ -2,4 +2,5 @@ name: AntiCheat
 main: KaxYum\AntiCheat\Main
 version: 1.0.0
 api: [4.0.0]
+mcpe-protocol: [527]
 author: KaxYum
