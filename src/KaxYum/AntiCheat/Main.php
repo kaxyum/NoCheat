@@ -1,6 +1,6 @@
 <?php
 
-namespace KaxYum\AntiCheat;
+namespace KaxYum\NoCheat;
 
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\PlayerJoinEvent;
