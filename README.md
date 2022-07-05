@@ -1,7 +1,7 @@
-#General
+# General
 This plugin blocks a maximum of cheater and protects your server.
 
-#Use
+# Use
 you can config this plugin in plugin_data folder
 
 # Block Cheat
